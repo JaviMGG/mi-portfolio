@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAVIER PORTFOLIO</title>
-<!-- ============================================================
-     EDITA AQUÍ 1/  Título de la pestaña del navegador (arriba)
-     ============================================================ -->
 <meta name="description" content="Portfolio de Javier">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -16,14 +13,24 @@
    1. TOKENS — toca esto para cambiar la paleta de colores entera
    ====================================================================== */
 :root{
-  --bg:        #07090a;   /* negro de fondo */
-  --bg-soft:   #0c1012;   /* negro un poco más claro para paneles */
-  --cyan:      #34e7d2;   /* cian principal (bordes, datos) */
-  --cyan-dim:  #1d7d73;   /* cian apagado (líneas secundarias) */
-  --red:       #ff3b4e;   /* rojo/carmesí (marca, acentos) */
-  --red-dim:   #7a1a22;   /* rojo apagado */
-  --text:      #d9fbf5;   /* texto principal, blanco-cian */
-  --text-dim:  #6f9c96;   /* texto secundario */
+  /* fondo y paneles */
+  --bg:        #180306;   /* rojo muy oscuro (fondo base del degradado) */
+  --panel-top: #07090A;   /* tono oscuro original — registro de actividad */
+  --panel-1:   #07090A;   /* tono oscuro original — sobre mí */
+  --panel-2:   #07090A;   /* tono oscuro original — stack y skills */
+  --panel-3:   #07090A;   /* tono oscuro original — proyectos */
+  --panel-4:   #07090A;   /* tono oscuro original — contacto */
+
+  /* acentos */
+  --red:       #F24848;   /* re0 de la waybar — marca y acentos */
+  --cyan:      #29BECC;   /* cy0 de la waybar — bordes, datos, selección */
+  --neon:      #00FFFF;   /* cyan neón — stat boxes y elementos destacados */
+  --cyan-dim:  #124E56;   /* cy1 — cian apagado (líneas secundarias) */
+
+  /* texto */
+  --text:      #F7ECE9;   /* texto principal */
+  --text-dim:  #D8BFBC;   /* texto secundario */
+
   --font-display: 'Chakra Petch', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
@@ -33,7 +40,7 @@
 html{ scroll-behavior:smooth; }
 
 body{
-  background:var(--bg);
+  background:linear-gradient(180deg, #331215 0%, #180306 10%, #07090a 35%);
   color:var(--text);
   font-family:var(--font-mono);
   font-size:14px;
@@ -41,7 +48,7 @@ body{
   overflow-x:hidden;
 }
 
-::selection{ background:var(--red); color:var(--bg); }
+::selection{ background:var(--cyan); color:var(--bg); }
 
 /* subtle scanline / noise overlay across the whole page */
 .scanlines{
@@ -85,7 +92,7 @@ a{ color:inherit; text-decoration:none; }
    ====================================================================== */
 #boot{
   position:fixed; inset:0; z-index:1000;
-  background:var(--bg);
+  background:#07090A;
   color:var(--cyan);
   font-family:var(--font-mono);
   font-size:13px;
@@ -117,10 +124,10 @@ a{ color:inherit; text-decoration:none; }
   color:var(--text-dim);
   letter-spacing:.1em;
   padding-bottom:20px;
-  border-bottom:1px solid rgba(52,231,210,.15);
+  border-bottom:1px solid rgba(41,190,204,.15);
   margin-bottom:28px;
 }
-.status-bar .dot{ color:var(--cyan); }
+.status-bar .dot{ color:var(--neon); }
 
 .hero-grid{
   flex:1;
@@ -140,9 +147,13 @@ a{ color:inherit; text-decoration:none; }
   justify-content:space-between;
   align-items:center;
   padding:10px 12px;
-  background:var(--bg-soft);
-  transition:transform .2s;
+  background:var(--neon);
+  scale:1;
+  transform-origin:center;
+  transition:scale .25s cubic-bezier(.2,.7,.3,1.3), background .25s ease;
+  cursor:default;
 }
+/* disposición escalonada en zigzag de los stat boxes */
 .stat-box:nth-child(1){ transform:translateX(30px); }
 .stat-box:nth-child(2){ transform:translateX(14px); }
 .stat-box:nth-child(3){ transform:translateX(-4px); }
@@ -150,8 +161,14 @@ a{ color:inherit; text-decoration:none; }
 .stat-box:nth-child(5){ transform:translateX(-4px); }
 .stat-box:nth-child(6){ transform:translateX(14px); }
 .stat-box:nth-child(7){ transform:translateX(30px); }
-.stat-box .label{ font-size:11px; letter-spacing:.05em; color:var(--text-dim); }
-.stat-box .value{ font-family:var(--font-display); font-weight:600; color:var(--cyan); font-size:15px; }
+.stat-box:hover{
+  scale:1.15;
+  background:var(--red);
+}
+.stat-box:hover .label,
+.stat-box:hover .value{ color:var(--bg); }
+.stat-box .label{ font-size:11px; letter-spacing:.05em; color:var(--bg); }
+.stat-box .value{ font-family:var(--font-display); font-weight:600; color:var(--bg); font-size:15px; }
 
 /* center brand block */
 .brand-col{
@@ -170,14 +187,15 @@ a{ color:inherit; text-decoration:none; }
   color:var(--red);
   font-size:20px;
 }
-.timestamp{ color:var(--red); font-size:13px; letter-spacing:.1em; }
+.timestamp{ color:var(--neon); font-size:13px; letter-spacing:.1em; }
+/* texto con relleno transparente y contorno */
 .brand-name{
   font-family:var(--font-display);
   font-weight:700;
   font-size:clamp(34px, 6vw, 68px);
   letter-spacing:.06em;
   color:transparent;
-  -webkit-text-stroke:1.5px var(--red);
+  -webkit-text-stroke:1.5px var(--neon);
   line-height:1;
 }
 .brand-sub{
@@ -185,6 +203,7 @@ a{ color:inherit; text-decoration:none; }
   letter-spacing:.3em;
   color:var(--text-dim);
   text-transform:uppercase;
+  text-align:center;
 }
 .role-line{
   margin-top:10px;
@@ -192,7 +211,7 @@ a{ color:inherit; text-decoration:none; }
   font-size:16px;
   color:var(--text);
 }
-.role-line span{ color:var(--cyan); }
+.role-line span{ color:var(--neon); }
 
 .cta-row{ display:flex; gap:12px; margin-top:14px; }
 .btn{
@@ -200,19 +219,19 @@ a{ color:inherit; text-decoration:none; }
   font-size:12px;
   letter-spacing:.1em;
   padding:10px 18px;
-  border:1px solid var(--cyan);
-  color:var(--cyan);
+  border:1px solid var(--neon);
+  color:var(--neon);
   background:transparent;
   cursor:pointer;
   transition:.15s ease;
 }
-.btn:hover{ background:var(--cyan); color:var(--bg); }
+.btn:hover{ background:var(--neon); color:var(--bg); }
 .btn.alt{ border-color:var(--red); color:var(--red); }
 .btn.alt:hover{ background:var(--red); color:var(--bg); }
 
 /* right log panel */
 .log-panel{
-  background:var(--bg-soft);
+  background:var(--panel-top);
   padding:14px;
   height:100%;
   max-height:420px;
@@ -243,7 +262,7 @@ a{ color:inherit; text-decoration:none; }
    ====================================================================== */
 .crumbnav{
   position:sticky; top:0; z-index:50;
-  background:rgba(7,9,10,.92);
+  background:rgba(24,3,6,.92);
   backdrop-filter:blur(4px);
   border-bottom:1px solid var(--cyan-dim);
   padding:12px clamp(16px,4vw,48px);
@@ -270,13 +289,13 @@ section{ padding:80px clamp(16px,4vw,48px); max-width:1200px; margin:0 auto; }
 
 /* ---- ABOUT (readme-style) ---- */
 .readme{
-  background:var(--bg-soft);
+  background:var(--panel-1);
   padding:24px;
   position:relative;
 }
 .readme .path{ color:var(--text-dim); font-size:11px; margin-bottom:14px; }
 .readme .path b{ color:var(--red); }
-.readme p{ color:var(--text-dim); max-width:70ch; margin-bottom:14px; }
+.readme p{ color:var(--text-dim); margin-bottom:14px; }
 .readme p b{ color:var(--text); font-weight:600; }
 .readme .sign{ color:var(--cyan); font-size:12px; margin-top:10px; }
 
@@ -286,7 +305,7 @@ section{ padding:80px clamp(16px,4vw,48px); max-width:1200px; margin:0 auto; }
   grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:18px;
 }
-.skill-box{ background:var(--bg-soft); padding:16px; }
+.skill-box{ background:var(--panel-2); padding:16px; }
 .skill-box .top-row{ display:flex; justify-content:space-between; font-size:12px; margin-bottom:10px; }
 .skill-box .top-row .name{ color:var(--text); letter-spacing:.05em; }
 .skill-box .top-row .lvl{ color:var(--cyan); font-family:var(--font-display); }
@@ -301,12 +320,25 @@ section{ padding:80px clamp(16px,4vw,48px); max-width:1200px; margin:0 auto; }
   gap:20px;
 }
 .proj-card{
-  background:var(--bg-soft);
+  background:var(--panel-3);
   padding:20px;
   display:flex; flex-direction:column; gap:10px;
   transition:.2s ease;
 }
-.proj-card:hover{ background:#101617; }
+.proj-card:hover{
+  background:var(--neon);
+}
+.proj-card:hover .idx,
+.proj-card:hover h3,
+.proj-card:hover p,
+.proj-card:hover .proj-link{
+  color:var(--bg);
+}
+.proj-card:hover .tag{
+  color:var(--bg);
+  border-color:var(--bg);
+}
+.proj-card:hover .proj-link:hover{ color:var(--bg); }
 .proj-card .idx{ font-size:11px; color:var(--red); letter-spacing:.1em; }
 .proj-card h3{ font-family:var(--font-display); font-size:18px; color:var(--text); }
 .proj-card p{ font-size:12px; color:var(--text-dim); flex:1; }
@@ -317,13 +349,13 @@ section{ padding:80px clamp(16px,4vw,48px); max-width:1200px; margin:0 auto; }
 
 /* ---- CONTACT (terminal prompt) ---- */
 .terminal{
-  background:var(--bg-soft);
+  background:var(--panel-4);
   padding:0;
   max-width:680px;
 }
 .terminal .bar{
   display:flex; gap:6px; padding:10px 14px;
-  border-bottom:1px solid rgba(52,231,210,.15);
+  border-bottom:1px solid rgba(41,190,204,.15);
   font-size:11px; color:var(--text-dim);
 }
 .terminal .body{ padding:20px; font-size:13px; }
@@ -366,35 +398,31 @@ footer .red{ color:var(--red); }
 
   <div class="hero-grid">
 
-    <!-- LEFT: stat boxes ================================================
-         EDITA AQUÍ 2/ Cambia label/value por lo que quieras mostrar
-         (años de experiencia, stack, proyectos, disponibilidad, etc.) -->
+    <!-- LEFT: stat boxes -->
     <div class="stat-stack">
       <div class="stat-box bracket"><span class="label">EXP. AÑOS</span><span class="value">0</span></div>
       <div class="stat-box bracket"><span class="label">PROYECTOS</span><span class="value">22</span></div>
       <div class="stat-box bracket"><span class="label">STACK PRIN.</span><span class="value">C#</span></div>
       <div class="stat-box bracket"><span class="label">DISPONIB.</span><span class="value">SÍ</span></div>
-      <div class="stat-box bracket"><span class="label">UBICACIÓN</span><span class="value">Sagunto-VLC</span></div>
+      <div class="stat-box bracket"><span class="label">UBICACIÓN</span><span class="value">Sagunto</span></div>
       <div class="stat-box bracket"><span class="label">IDIOMAS</span><span class="value">03</span></div>
       <div class="stat-box bracket"><span class="label">CV</span><span class="value">PDF</span></div>
     </div>
 
-    <!-- CENTER: brand ===================================================
-         EDITA AQUÍ 3/ Tu nombre / handle / rol -->
+    <!-- CENTER: brand -->
     <div class="brand-col">
       <div class="brand-mark">◆</div>
       <div class="timestamp" id="dateline">-- -- -----</div>
       <div class="brand-name">JAVIER MORALES</div>
-      <div class="brand-sub">Portfolio Terminal</div>
-      <div class="role-line">Ingeniero de Software <span>Full-Stack</span> // Ciberseguridad </div>
+      <div class="brand-sub">Cyber-Portfolio</div>
+      <div class="role-line">Ingeniero de Software <span>Full-Stack</span> // Ciberseguridad</div>
       <div class="cta-row">
         <button class="btn" onclick="document.querySelector('#proyectos').scrollIntoView()">VER PROYECTOS</button>
         <button class="btn alt" onclick="document.querySelector('#contacto').scrollIntoView()">CONTACTAR</button>
       </div>
     </div>
 
-    <!-- RIGHT: log panel =================================================
-         EDITA AQUÍ 4/ Lista tipo "actividad reciente" — cambia texto -->
+    <!-- RIGHT: log panel (actividad reciente) -->
     <div class="log-panel bracket">
       <div class="title">Registro de actividad</div>
       <div id="log-rows"></div>
@@ -402,11 +430,10 @@ footer .red{ color:var(--red); }
 
   </div>
 
-  <!-- RAM bar reutilizada como "disponibilidad" ==========================
-       EDITA AQUÍ 5/ Cambia el nº de segmentos activos con data-filled -->
+  <!-- Barra de disponibilidad (segmentos activos controlados por data-filled) -->
   <div class="ram-row">
-    <div class="ram-label">DISPONIBILIDAD PARA NUEVOS PROYECTOS: 90%</div>
-    <div class="ram-bar" id="ram-bar" data-filled="90"></div>
+    <div class="ram-label">DISPONIBILIDAD PARA NUEVOS PROYECTOS: 95%</div>
+    <div class="ram-bar" id="ram-bar" data-filled="95"></div>
   </div>
 
 </header>
@@ -427,9 +454,8 @@ footer .red{ color:var(--red); }
   </div>
   <div class="readme bracket">
     <div class="path">home/sobre-mi/<b>readme.txt</b></div>
-    <!-- EDITA AQUÍ 6/ Tu bio real, 2-3 párrafos cortos -->
     <p><b>Hola, Javier Morales.</b> Ingeniero Informático (concretamente Ingeniero de Software). Soy desarrollador Full-Stack, así que me importa tanto cómo se ve como cómo funciona los proyectos SW.</p>
-    <p>Trabajo sobre todo con <b>Java, C#, Python</b>, y últimamente le meto mano a temas relacionados con Ciberseguridad (trato de ser tanto Ingeniero de Software como estudiante de Ciberseguridad).</p>
+    <p>Trabajo sobre todo con <b>Java, C#, Python</b>, y últimamente le meto mano a temas relacionados con Ciberseguridad (trato de ser un Ingeniero de Software que emplea/crea herramientas con IA para centrarlo en temas relacionado con Ciberseguridad).</p>
     <p>Normalmente trabajo usando las siguientes IAs:<b> Qwen, Gemini, ChatGPT, Claude</b>.</p>
 
     <div class="sign">—————————————————————</div>
@@ -442,23 +468,23 @@ footer .red{ color:var(--red); }
     <div class="eyebrow">02 // Capacidades</div>
     <h2>Stack &amp; <span>skills</span></h2>
   </div>
-  <!-- EDITA AQUÍ 7/ Duplica/edita .skill-box; data-lvl va de 1 a 10 -->
+  <!-- data-lvl va de 1 a 10 -->
   <div class="skills-grid" id="skills-grid">
-    <div class="skill-box bracket" data-name="Arch/CachyOS"             data-lvl="9"></div>
+    <div class="skill-box bracket" data-name="CachyOS"                  data-lvl="9"></div>
     <div class="skill-box bracket" data-name="Windows"                  data-lvl="9"></div>
     <div class="skill-box bracket" data-name="Java"                     data-lvl="9"></div>
 
     <div class="skill-box bracket" data-name="C# /.NET"                 data-lvl="8"></div>
     <div class="skill-box bracket" data-name="Python"                   data-lvl="8"></div>
-    
+
     <div class="skill-box bracket" data-name="C"                        data-lvl="7"></div>
     <div class="skill-box bracket" data-name="Git / Github"             data-lvl="7"></div>
     <div class="skill-box bracket" data-name="Bases de datos SQL"       data-lvl="7"></div>
 
     <div class="skill-box bracket" data-name="JavaScript"               data-lvl="6"></div>
     <div class="skill-box bracket" data-name="C++"                      data-lvl="5"></div>
-    <div class="skill-box bracket" data-name="CSS / diseño de UI"       data-lvl="4"></div>
-    <div class="skill-box bracket" data-name="Rust"                     data-lvl="3"></div>
+    <div class="skill-box bracket" data-name="CSS / diseño de UI"       data-lvl="3"></div>
+    <div class="skill-box bracket" data-name="Rust"                     data-lvl="2"></div>
 
   </div>
 </section>
@@ -469,26 +495,25 @@ footer .red{ color:var(--red); }
     <div class="eyebrow">03 // Trabajo</div>
     <h2>Proyectos <span>destacados</span></h2>
   </div>
-  <!-- EDITA AQUÍ 8/ Duplica/edita .proj-card por cada proyecto real -->
   <div class="proj-grid">
     <div class="proj-card bracket">
       <div class="idx">PROJ. 01</div>
       <h3>Lucy Edgerunner Theme</h3>
-      <p>Descripción breve: Paleta de colores para Visual Studio Code. Modifiqué las lineas para que esteticamente fuera diferente</p>
+      <p>Paleta de colores para Visual Studio Code. Modifiqué las lineas para que esteticamente fuera diferente</p>
       <div class="tag-row"><span class="tag">JSON</span></div>
       <a class="proj-link" href="https://github.com/JaviMGG/Lucy-Edgerunner" target="_blank">Ver proyecto →</a>
     </div>
     <div class="proj-card bracket">
       <div class="idx">PROJ. 02</div>
       <h3>(proyecto del segundo cuatrimestre)</h3>
-      <p>Descripción breve: qué problema resuelve y qué hiciste tú concretamente.</p>
+      <p>qué problema resuelve y qué hiciste tú concretamente.</p>
       <div class="tag-row"><span class="tag">Next.js</span><span class="tag">Tailwind</span></div>
       <a class="proj-link" href="#" target="_blank">Ver proyecto →</a>
     </div>
     <div class="proj-card bracket">
       <div class="idx">PROJ. 03</div>
       <h3>KATIA</h3>
-      <p>Descripción breve: IA local que ejecuta comandos de Ciberseguridad empleando comunicación STT y TTS. Creé los 2 modelos de IA locales y verifiqué la validez.</p>
+      <p>IA local que ejecuta comandos de Ciberseguridad empleando comunicación STT y TTS. Creé los 2 modelos de IA locales y verifiqué la validez de resultados.</p>
       <div class="tag-row"><span class="tag">AI</span><span class="tag">Python</span></div>
       <a class="proj-link" href="#" target="_blank">Ver proyecto →</a>
     </div>
@@ -505,7 +530,6 @@ footer .red{ color:var(--red); }
     <div class="bar">home/contacto — sesión activa</div>
     <div class="body">
       <div class="prompt-line"><span class="user">Javier@portfolio</span><span class="sep">:</span>~$ cat contacto.txt</div>
-      <!-- EDITA AQUÍ 9/ Tus datos de contacto reales -->
       <div class="contact-list">
         <a href="jmmtrabajo10@gmail.com"><span class="k">email</span> → jmmtrabajo10@gmail.com</a>
         <a href="https://github.com/JaviMGG" target="_blank"><span class="k">github</span> → github.com/JaviMGG</a>
@@ -517,7 +541,7 @@ footer .red{ color:var(--red); }
 
 <footer>
   <span>© <span id="year"></span> J. MORALES — <span class="red">Todos los derechos reservados</span></span>
-  <span>build v.1.0 · hecho con HTML/CSS/JS puro</span>
+  <span>build v.1.1</span>
 </footer>
 
 <script>
@@ -550,17 +574,15 @@ bootMsgs.forEach((line,i)=>{
 });
 
 /* ---------- log panel (actividad reciente) ---------- */
-/* EDITA AQUÍ 10/ Cambia estas líneas por lo que quieras mostrar
-   (commits recientes, stack usado, lo que sea) */
 const logData = [
-  ["deploy", "portfolio-site", "ok"],
-  ["commit", "fix: nav mobile", "ok"],
+  ["deploy", "mi-portfolio", "ok"],
   ["commit", "feat: sección proyectos", "ok"],
+  ["build",  "katia (IA local)", "ok"],
+  ["test",   "modelo STT/TTS", "12/12"],
+  ["commit", "lucy-edgerunner", "ok"],
   ["build",  "vite build", "ok"],
-  ["test",   "unit tests", "12/12"],
-  ["commit", "chore: deps", "ok"],
-  ["deploy", "api-service", "ok"],
-  ["commit", "refactor: hooks", "ok"],
+  ["estudio","ciberseguridad", "en curso"],
+  ["estado", "abierto a proyectos", "ok"],
 ];
 const logRows = document.getElementById('log-rows');
 logData.forEach(([proc, detail, status])=>{
